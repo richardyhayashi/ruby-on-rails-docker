@@ -1,0 +1,66 @@
+services:
+  #nginx:
+  #  image: nginx
+
+  postgres:
+    image: postgres:16.3-alpine
+    container_name: postgres
+    restart: unless-stopped
+    tty: true
+    ports:
+      - ${DB_PORT_OUT}:${DB_PORT}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+     - rails
+
+  #mysql:
+  #  image: mysql:8.4.0
+  #  container_name: mysql
+  #  restart: unless-stopped
+  #  tty: true
+  #  ports:
+  #    - ${DB_PORT_OUT}:${DB_PORT}
+  #  volumes:
+  #    - db-data:/var/lib/mysql
+  #  environment:
+  #    MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+  #    MYSQL_DATABASE: ${DB_DATABASE}
+  #    MYSQL_USER: ${DB_USERNAME}
+  #    MYSQL_PASSWORD: ${DB_PASSWORD}
+  #    SERVICE_TAGS: dev
+  #    SERVICE_NAME: mysql
+  #  networks:
+  #    - rails
+
+  ruby-app:
+    image: ruby-app:1.0.0
+    container_name: ruby-app-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Use user id & group id in .env
+        USER_ID: ${USER_ID:-0}
+        GROUP_ID: ${GROUP_ID:-0}
+    user: ${USER_ID}:${GROUP_ID}
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src:/app
+      # Set the logins and groups identical to host environment
+      - /etc/group:/etc/group:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/shadow:/etc/shadow:ro
+    depends_on:
+      - postgres
+
+volumes:
+  db-data:
+
+networks:
+  rails:
