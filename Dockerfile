@@ -10,6 +10,8 @@ RUN apk add --no-cache --update build-base \
     libffi-dev \
     ruby-bigdecimal \
     musl-dev \
+    #alpine-sdk \
+    #curl-dev
     libpq-dev \
     git \
     curl \
