@@ -10,8 +10,6 @@
 
 ### Set in config/database.yml
 
-#### PostgreSQL
-
 `default: &default`<br>
 `   ...`<br>
 `   host: <%= ENV['DB_HOST'] %>`<br>
@@ -25,10 +23,10 @@
 `   ...`<br>
 `   database: <%= ENV['DB_TEST'] %>`<br>
 
+#### PostgreSQL
+
+
 #### MySQL
-
-
-#### Sqlite
 
 
 ## Run Development Server

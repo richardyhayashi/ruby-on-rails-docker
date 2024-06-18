@@ -5,23 +5,24 @@ ENV LANG="C.UTF-8"
 ENV RAILS_ENV="development"
 ENV BUNDLE_PATH=/gems
 
-RUN apk update && \
-    apk --no-cache --update add build-base \
+RUN apk add --no-cache --update build-base \
     linux-headers \
     libffi-dev \
     ruby-bigdecimal \
-    #sqlite \
-    #sqlite-dev \
-    #mysql \
-    #
-    #postgresql \
+    musl-dev \
     libpq-dev \
-    postgresql-contrib \
     git \
     curl \
     nodejs \
     yarn \
     tzdata \
+    # ***Sqlite***
+    #sqlite \
+    #sqlite-dev \
+    # ***MySQL***
+    mariadb-dev \
+    # ***PosgreSQL***
+    postgresql-contrib \
     && rm -rf /var/cache/apk/*
 
 WORKDIR /app

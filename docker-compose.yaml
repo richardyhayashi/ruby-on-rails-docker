@@ -2,36 +2,36 @@ services:
   #nginx:
   #  image: nginx
 
-  postgres:
-    image: postgres:16.3-alpine
-    container_name: postgres
-    restart: unless-stopped
-    tty: true
-    ports:
-      - ${DB_PORT_OUT}:${DB_PORT}
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-
-  #mysql:
-  #  image: mysql:8.4.0
-  #  container_name: mysql
+  #postgres:
+  #  image: postgres:16.3-alpine
+  #  container_name: postgres
   #  restart: unless-stopped
   #  tty: true
   #  ports:
   #    - ${DB_PORT_OUT}:${DB_PORT}
   #  volumes:
-  #    - db-data:/var/lib/mysql
+  #    - db_data:/var/lib/postgresql/data
   #  environment:
-  #    MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-  #    MYSQL_DATABASE: ${DB_DATABASE}
-  #    MYSQL_USER: ${DB_USERNAME}
-  #    MYSQL_PASSWORD: ${DB_PASSWORD}
-  #    SERVICE_TAGS: dev
-  #    SERVICE_NAME: mysql
+  #    POSTGRES_DB: ${DB_DATABASE}
+  #    POSTGRES_USER: ${DB_USERNAME}
+  #    POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  mysql:
+    image: mysql:8.4.0
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - ${DB_PORT_OUT}:${DB_PORT}
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
 
   ruby-app:
     image: ruby-app:1.0.0
@@ -62,7 +62,8 @@ services:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
-      - postgres
+      #- postgres
+      - mysql
 
 volumes:
   db_data:
