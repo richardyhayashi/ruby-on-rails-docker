@@ -10,13 +10,11 @@ services:
     ports:
       - ${DB_PORT_OUT}:${DB_PORT}
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-    networks:
-     - rails
 
   #mysql:
   #  image: mysql:8.4.0
@@ -34,8 +32,6 @@ services:
   #    MYSQL_PASSWORD: ${DB_PASSWORD}
   #    SERVICE_TAGS: dev
   #    SERVICE_NAME: mysql
-  #  networks:
-  #    - rails
 
   ruby-app:
     image: ruby-app:1.0.0
@@ -56,11 +52,18 @@ services:
       - /etc/group:/etc/group:ro
       - /etc/passwd:/etc/passwd:ro
       - /etc/shadow:/etc/shadow:ro
+    environment:
+      RAILS_ENV: ${RAILS_ENV}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - postgres
 
 volumes:
-  db-data:
+  db_data:
 
 networks:
-  rails:
+  rails_network:

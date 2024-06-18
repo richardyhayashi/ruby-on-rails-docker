@@ -6,7 +6,8 @@ if [ "$RAILS_ENV" = "development" ]; then
         rm /app/tmp/pids/server.pid
     fi
     echo "Preparing database..."
-    #bundle exec rake db:prepare
+    ./bin/rails db:create
+    ./bin/rails db:prepare
 fi
 
 exec "$@"
