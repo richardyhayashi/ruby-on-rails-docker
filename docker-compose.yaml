@@ -12,7 +12,7 @@ services:
   #  volumes:
   #    - db_data:/var/lib/postgresql/data
   #  environment:
-  #    POSTGRES_DB: ${DB_DATABASE}
+  #    POSTGRES_DB: ${DB_NAME}
   #    POSTGRES_USER: ${DB_USERNAME}
   #    POSTGRES_PASSWORD: ${DB_PASSWORD}
 
@@ -32,6 +32,25 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+
+  #mariadb:
+  #  image: mariadb:11.4.2-ubi
+  #  container_name: mariadb
+  #  restart: unless-stopped
+  #  tty: true
+  #  ports:
+  #    - ${DB_PORT_OUT}:${DB_PORT}
+  #  volumes:
+  #    - db_data:/var/lib/mysql
+  #    #- ./mariadb/init:/docker-entrypoint-initdb.d
+  #  environment:
+  #    MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+  #    MARIADB_DATABASE: ${DB_NAME}
+  #    MARIADB_TEST_DB: ${DB_TEST}
+  #    MARIADB_USER: ${DB_USERNAME}
+  #    MARIADB_PASSWORD: ${DB_PASSWORD}
+  #    SERVICE_TAGS: dev
+  #    SERVICE_NAME: mariadb
 
   ruby-app:
     image: ruby-app:1.0.0
@@ -64,6 +83,7 @@ services:
     depends_on:
       #- postgres
       - mysql
+      #- mariadb
 
 volumes:
   db_data:
