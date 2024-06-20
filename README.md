@@ -4,7 +4,7 @@
 
 `$ rails new src`   # Default: sqlite
 `$ rails new src --database=postgresql`
-`$ rails new src --database=mysql`
+`$ rails new src --database=mysql`  # Also for mariadb
 
 ### Set in config/database.yml
 
