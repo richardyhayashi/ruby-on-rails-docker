@@ -1,6 +1,18 @@
 services:
-  #nginx:
-  #  image: nginx
+  nginx:
+    image: nginx:1.27.0-alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 8080:80
+      - 443:443
+    #volumes:
+    # - /etc/nginx/conf.d:/etc/ngix/conf.d
+    # - /src:/app
+    networks:
+      - rails_network
+    depends_on:
+      - ruby-app
 
   #postgres:
   #  image: postgres:16.3-alpine
@@ -15,6 +27,8 @@ services:
   #    POSTGRES_DB: ${DB_NAME}
   #    POSTGRES_USER: ${DB_USERNAME}
   #    POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #  networks:
+  #   - rails_network
 
   mysql:
     image: mysql:8.4.0
@@ -32,6 +46,8 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+    networks:
+      - rails_network
 
   #mariadb:
   #  image: mariadb:11.4.2-ubi
@@ -51,6 +67,8 @@ services:
   #    MARIADB_PASSWORD: ${DB_PASSWORD}
   #    SERVICE_TAGS: dev
   #    SERVICE_NAME: mariadb
+  #  networks:
+  #    - rails_network
 
   ruby-app:
     image: ruby-app:1.0.0
@@ -80,6 +98,8 @@ services:
       DB_TEST: ${DB_TEST}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - rails_network
     depends_on:
       #- postgres
       - mysql
